@@ -39,7 +39,7 @@ jobs:
             sudo yum install -y git python3-pip
 
             # Clone or pull the latest code
-            cd /home/ec2-user/userserver || git clone https://github.com/ECE496-Team-2024900/Userserver /home/ec2-user/userserver
+            cd /home/ec2-user/userserver || git clone https://github.com/ECE496-Team-2024900/UserMicroservice /home/ec2-user/userserver
             cd /home/ec2-user/userserver
 
             # Pull latest changes and install dependencies
