@@ -1,0 +1,52 @@
+name: Deploy User Microservice
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Prepare SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_KEY }}" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Deploy to EC2
+        env:
+          HOST: ${{ secrets.EC2_HOST }}
+          USER: ${{ secrets.EC2_USER }}
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $USER@$HOST << 'EOF'
+            # Update and install necessary packages
+            sudo yum update -y
+            sudo yum install -y git python3-pip
+
+            # Clone or pull the latest code
+            cd /home/ec2-user/userMicroservice || git clone https://github.com/ECE496-Team-2024900/UserMicroservice /home/ec2-user/userMicroservice
+            cd /home/ec2-user/userMicroservice
+
+            # Pull latest changes and install dependencies
+            git pull origin main
+            pip3 install -r requirements.txt
+
+            # Restart the application
+            pkill -f gunicorn || true
+            nohup gunicorn --bind 0.0.0.0:443 wsgi:application --certfile=/etc/ssl/certs/selfsigned.crt --keyfile=/etc/ssl/private/selfsigned.key &
+          EOF
