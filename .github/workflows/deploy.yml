@@ -48,5 +48,5 @@ jobs:
 
             # Restart the application
             pkill -f gunicorn || true
-            nohup gunicorn --bind 0.0.0.0:443 wsgi:application --certfile=/etc/ssl/certs/selfsigned.crt --keyfile=/etc/ssl/private/selfsigned.key &
+            nohup gunicorn --bind 0.0.0.0:443 userserver.wsgi:application --certfile=/etc/ssl/certs/selfsigned.crt --keyfile=/etc/ssl/private/selfsigned.key &
           EOF
