@@ -1,6 +1,18 @@
-### Setup ###
+### Prerequisites ###
+- Ensure you have the following installed:
+  - Python
+  - Git
+  - PSQL shell
+
+### Installation ###
+- Clone the repo
+- run `python -m venv env`
+- run `env\Scripts\activate`
+- run `pip install -r requirements.txt`
+- run `pip freeze` to verify
+- run `set DATABASE_URL=postgres://postgres:feF2uuFD21LHhacoQ3AB@database-capstone-user.cns26sooon4s.ca-central-1.rds.amazonaws.com:5432/postgres?sslmode=require`
 - To connect to the database:
-  - Install psql and in command line, run `psql 'postgres://postgres:feF2uuFD21LHhacoQ3AB@database-capstone-user.cns26sooon4s.ca-central-1.rds.amazonaws.com:5432/postgres?sslmode=require'`
+  - In command line, run `psql 'postgres://postgres:feF2uuFD21LHhacoQ3AB@database-capstone-user.cns26sooon4s.ca-central-1.rds.amazonaws.com:5432/postgres?sslmode=require'`
   - OR:
     - From this repo, download pgConnect.json file
     - Install pgAdmin4
