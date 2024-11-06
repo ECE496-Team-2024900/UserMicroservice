@@ -1,0 +1,13 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "USER",
+            "Group": "ECE496",
+            "Host": "database-capstone-user.cns26sooon4s.ca-central-1.rds.amazonaws.com",
+            "Port": 5432,
+            "MaintenanceDB": "postgres",
+            "Username": "postgres",
+            "SSLMode": "require"
+        }
+    }
+}
