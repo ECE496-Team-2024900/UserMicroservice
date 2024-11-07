@@ -11,6 +11,7 @@
 - run `pip install -r requirements.txt`
 - run `pip freeze` to verify
 - run `set DATABASE_URL=postgres://postgres:feF2uuFD21LHhacoQ3AB@database-capstone-user.cns26sooon4s.ca-central-1.rds.amazonaws.com:5432/postgres?sslmode=require`
+- run `python manage.py runserver`
 - To connect to the database:
   - In command line, run `psql 'postgres://postgres:feF2uuFD21LHhacoQ3AB@database-capstone-user.cns26sooon4s.ca-central-1.rds.amazonaws.com:5432/postgres?sslmode=require'`
   - OR:
