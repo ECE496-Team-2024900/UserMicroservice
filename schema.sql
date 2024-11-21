@@ -10,7 +10,7 @@ CREATE TABLE "patients" (
   "first_name" varchar NOT NULL,
   "last_name" varchar NOT NULL,
   "phone_num" integer NOT NULL,
-  "medical_device_id" varchar NOT NULL,
+  "medical_device_id" varchar,
   "email" varchar NOT NULL,
   "date_of_birth" date NOT NULL
 );
