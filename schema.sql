@@ -1,5 +1,5 @@
 CREATE TABLE "clinicians" (
-  "medical_reF_number" integer PRIMARY KEY,
+  "medical_ref_number" integer PRIMARY KEY,
   "first_name" varchar NOT NULL,
   "last_name" varchar NOT NULL,
   "email" varchar NOT NULL
@@ -23,4 +23,4 @@ CREATE TABLE "available_slots" (
   "date" date NOT NULL
 );
 
-ALTER TABLE "available_slots" ADD FOREIGN KEY ("clinician_id") REFERENCES "clinicians" ("medical_reF_number");
+ALTER TABLE "available_slots" ADD FOREIGN KEY ("clinician_id") REFERENCES "clinicians" ("medical_ref_number");
