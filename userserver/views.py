@@ -26,6 +26,6 @@ def get_clinician_info(request):
         if (obj is not None):
             return JsonResponse({"message": list(obj.values())[0]}, status=200)
         else:
-            return JsonResponse({"message": "No patients exist"}, status=404)
+            return JsonResponse({"message": "Clinician with that email does not exist"}, status=404)
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
