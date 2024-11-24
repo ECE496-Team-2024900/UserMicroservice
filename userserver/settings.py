@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +25,7 @@ SECRET_KEY = 'django-insecure--i_wcfr!o3bflqn^03s$ev3h6j1q)s0ca)st+tyxq+wyx==1@t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['18.216.138.246', 'localhost', '127.0.0.1', 'ec2-18-216-138-246.us-east-2.compute.amazonaws.com']
+ALLOWED_HOSTS = ['18.216.138.246', 'localhost', '127.0.0.1', 'ec2-18-216-138-246.us-east-2.compute.amazonaws.com', '10.0.2.2']
 
 
 # Application definition
@@ -38,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'userserver',
     'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -72,18 +73,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'userserver.wsgi.application'
 
+CORS_ORIGIN_ALLOW_ALL = True
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-# Use the DATABASE_URL environment variable to configure the database.
 DATABASES = {
-    'default': dj_database_url.config(
-        conn_max_age=600,
-        conn_health_checks=True,
-    ),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',  # Use 'mysql' if using MySQL
+        'NAME': 'postgres',                     # Name of your database
+        'USER': 'postgres',
+        'PASSWORD': 'feF2uuFD21LHhacoQ3AB',
+        'HOST': 'database-capstone-user.cns26sooon4s.ca-central-1.rds.amazonaws.com',                 # RDS endpoint without 'http://'
+        'PORT': '5432',                             # Default PostgreSQL port
+    }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
