@@ -21,5 +21,7 @@ from userserver import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index)
+    path('', views.index),
+    # path('users/get_clinician_info', views.get_clinician_info),
+    path('users/find_all_patients', views.find_all_patients)
 ]
