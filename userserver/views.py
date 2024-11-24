@@ -1,7 +1,7 @@
 from django.core.serializers import serialize
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
-from .models import Patients
+from .models import Patients, Clinicians
 import json
 
 def index(request):
@@ -13,6 +13,18 @@ def find_all_patients(request):
         obj = Patients.objects.all()
         if (obj is not None):
             return JsonResponse({"message": list(obj.values())}, status=200)
+        else:
+            return JsonResponse({"message": "No patients exist"}, status=404)
+    except Exception as e:
+        return JsonResponse({"message": str(e)}, status=500)
+
+@api_view(['GET'])
+def get_clinician_info(request):
+    params = request.query_params
+    try:
+        obj = Clinicians.objects.filter(email=params['email']).all()
+        if (obj is not None):
+            return JsonResponse({"message": list(obj.values())[0]}, status=200)
         else:
             return JsonResponse({"message": "No patients exist"}, status=404)
     except Exception as e:
