@@ -29,3 +29,15 @@ def get_clinician_info(request):
             return JsonResponse({"message": "Clinician with that email does not exist"}, status=404)
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
+    
+@api_view(['GET'])
+def get_patient_info(request):
+    params = request.query_params
+    try:
+        obj = Patients.objects.filter(email=params['email']).all()
+        if (obj is not None):
+            return JsonResponse({"message": list(obj.values())[0]}, status=200)
+        else:
+            return JsonResponse({"message": "Patient with that email does not exist"}, status=404)
+    except Exception as e:
+        return JsonResponse({"message": str(e)}, status=500)
