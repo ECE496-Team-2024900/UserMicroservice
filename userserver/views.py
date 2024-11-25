@@ -1,4 +1,5 @@
 from django.core.serializers import serialize
+from django.forms import model_to_dict
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from .models import Patients, Clinicians
@@ -22,9 +23,9 @@ def find_all_patients(request):
 def get_clinician_info(request):
     params = request.query_params
     try:
-        obj = Clinicians.objects.filter(email=params['email']).all()
+        obj = Clinicians.objects.filter(email=params['email']).first()
         if (obj is not None):
-            return JsonResponse({"message": list(obj.values())[0]}, status=200)
+            return JsonResponse({"message": model_to_dict(obj)}, status=200)
         else:
             return JsonResponse({"message": "Clinician with that email does not exist"}, status=404)
     except Exception as e:
