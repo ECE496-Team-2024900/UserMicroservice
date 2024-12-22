@@ -1,8 +1,7 @@
 CREATE TABLE "clinicians" (
-  "medical_ref_number" integer PRIMARY KEY,
   "first_name" varchar NOT NULL,
   "last_name" varchar NOT NULL,
-  "email" varchar NOT NULL
+  "email" varchar PRIMARY KEY
 );
 
 CREATE TABLE "patients" (
@@ -17,10 +16,10 @@ CREATE TABLE "patients" (
 
 CREATE TABLE "available_slots" (
   "id" SERIAL PRIMARY KEY,
-  "clinician_id" integer NOT NULL,
+  "clinician_id" varchar NOT NULL,
   "start_time_of_availability" varchar NOT NULL,
   "end_time_of_availability" varchar NOT NULL,
   "date" date NOT NULL
 );
 
-ALTER TABLE "available_slots" ADD FOREIGN KEY ("clinician_id") REFERENCES "clinicians" ("medical_ref_number");
+ALTER TABLE "available_slots" ADD FOREIGN KEY ("clinician_id") REFERENCES "clinicians" ("email");
