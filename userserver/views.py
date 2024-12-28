@@ -42,3 +42,30 @@ def get_patient_info(request):
             return JsonResponse({"message": "Patient with that email does not exist"}, status=404)
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
+
+@api_view(['PUT'])
+# Adding a new clinician
+def add_clinician(request):
+    try:
+        # Adding a clinician object based on provided body
+        new_clincian = json.loads(request.body)
+        Clinicians.objects.create(**new_clincian)
+    except Exception as e:
+        return JsonResponse({'message':str(e)}, status=500)
+    return JsonResponse({'message':'Clinician was successfully added'}, status=200)
+
+@api_view(['GET'])
+# Checking if clinician exists in DB (i.e. if they are registered)
+def check_if_clinician_exists(request):
+    try:
+        # Checking if a clinician with given email exists
+        # Email is the primary key, hence defines whether clinician exists
+        email = request.query_params['email']
+        clinician = Clinicians.objects.filter(email=email).first()
+        if (clinician is not None):
+            return JsonResponse({"message": "Clinician registered"}, status=200)
+        else:
+            return JsonResponse({"message": "Clinician not registered"}, status=201)
+    except Exception as e:
+        return JsonResponse({'message':str(e)}, status=500)
+    
