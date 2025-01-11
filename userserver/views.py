@@ -44,6 +44,9 @@ def get_patient_info(request):
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
 
+# Performs a search of patient records by first and last name
+# Expects a search string (containing patient name) that is to be used for the filtering
+# Returns a list of all patients whose first and/or last name matches the search query
 @api_view(['GET'])
 def search_patients(request):
     try:
@@ -76,7 +79,10 @@ def search_patients(request):
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
     
-
+# Creates a new patient record in database
+# Expects a JSON body with key-value pairs that denote the fields and their values
+# Fields/keys required in JSON: first_name, last_name, date_of_birth, medical_ref_number, email, phone_num
+# Returns a success or error message
 @api_view(['PUT'])
 def create_patient(request):
     try:
