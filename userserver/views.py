@@ -32,14 +32,20 @@ def get_clinician_info(request):
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
     
+# Retrieves the patient record that has the specified email address
+# Expects an email to be passed in
+# Returns a dictionary object containing all fields of the patient record
 @api_view(['GET'])
 def get_patient_info(request):
     params = request.query_params
     try:
+        # Filter patient records using the email parameter that was passed in 
         obj = Patients.objects.filter(email=params['email']).first()
         if (obj is not None):
+            # Patient with that email found - use model_to_dict to return a dictionary so that attributes can be accessed by name
             return JsonResponse({"message": model_to_dict(obj)}, status=200)
         else:
+            # Patient with that email not found
             return JsonResponse({"message": "Patient with that email does not exist"}, status=404)
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
