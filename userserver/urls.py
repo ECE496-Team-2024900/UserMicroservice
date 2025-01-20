@@ -26,5 +26,7 @@ urlpatterns = [
     path('users/find_all_patients', views.find_all_patients),
     path('users/get_patient_info', views.get_patient_info),
     path('users/add_clinician', views.add_clinician),
-    path('users/check_if_clinician_exists', views.check_if_clinician_exists)
+    path('users/check_if_clinician_exists', views.check_if_clinician_exists),
+    path('users/search_patients', views.search_patients),
+    path('users/create_patient', views.create_patient)
 ]
