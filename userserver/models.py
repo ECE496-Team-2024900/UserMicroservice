@@ -20,10 +20,9 @@ class AvailableSlots(models.Model):
 
 
 class Clinicians(models.Model):
-    medical_ref_number = models.IntegerField(primary_key=True)
     first_name = models.CharField()
     last_name = models.CharField()
-    email = models.CharField()
+    email = models.CharField(primary_key=True)
 
     class Meta:
         managed = False
