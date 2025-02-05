@@ -39,11 +39,19 @@ def get_clinician_info(request):
 def get_patient_info(request):
     params = request.query_params
     try:
+        filter_by_fields = request.GET.get('fields', None)
         # Filter patient records using the email parameter that was passed in 
         obj = Patients.objects.filter(email=params['email']).first()
+        patient_data = model_to_dict(obj)
         if (obj is not None):
+            if (filter_by_fields is not None):
+                # Splitting all fields to filter by
+                fields = filter_by_fields.split(",")
+                # Return a dictionary with only the requested fields
+                patient_data = {field: patient_data.get(field) for field in fields if field in patient_data}
+                return JsonResponse(patient_data, status=200)
             # Patient with that email found - use model_to_dict to return a dictionary so that attributes can be accessed by name
-            return JsonResponse({"message": model_to_dict(obj)}, status=200)
+            return JsonResponse({"message": patient_data}, status=200)
         else:
             # Patient with that email not found
             return JsonResponse({"message": "Patient with that email does not exist"}, status=404)
