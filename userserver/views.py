@@ -40,7 +40,7 @@ def get_patient_info(request):
     params = request.query_params
     try:
         # Filter patient records using the email parameter that was passed in 
-        obj = Patients.objects.filter(email=params['email']).first()
+        obj = Patients.objects.filter(medical_ref_number=params['id']).first()
         if (obj is not None):
             # Patient with that email found - use model_to_dict to return a dictionary so that attributes can be accessed by name
             return JsonResponse({"message": model_to_dict(obj)}, status=200)
