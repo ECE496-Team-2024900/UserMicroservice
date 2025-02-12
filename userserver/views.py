@@ -10,7 +10,7 @@ def index(request):
     return JsonResponse({"message": "This is the user microservice"})
 
 @api_view(['GET'])
-def find_all_patients(request):
+def get_all_patients(request):
     try:
         obj = Patients.objects.all()
         if (obj is not None):
@@ -19,6 +19,26 @@ def find_all_patients(request):
             return JsonResponse({"message": "No patients exist"}, status=404)
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
+
+# Retrieves patients meeting specified criteria
+# Expects a body that contains fields and their assignments to filter by
+# If a body isn't provided, function will still work, but recommended to use the get_all_patients method
+@api_view(['POST'])
+# Response HTTP status values:
+# - 200 = patients returned
+# - 204 = no error, but no patients exist meeting this criteria
+# - 500 = error encountered
+def get_patients(request):
+    try:
+        filters = json.loads(request.body)
+
+        # Fetching patients from DB
+        patients = Patients.objects.filter(**filters)
+        if patients.exists():
+            return JsonResponse({'message': 'No patients found.'}, status=204)
+        return JsonResponse(list(patients.values()), safe=False, status=200)
+    except Exception as e:
+        return JsonResponse({'message': str(e)}, status=500)
 
 @api_view(['GET'])
 def get_clinician_info(request):
