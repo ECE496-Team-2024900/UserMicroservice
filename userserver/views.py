@@ -35,8 +35,8 @@ def get_patients(request):
         # Fetching patients from DB
         patients = Patients.objects.filter(**filters)
         if patients.exists():
-            return JsonResponse({'message': 'No patients found.'}, status=204)
-        return JsonResponse(list(patients.values()), safe=False, status=200)
+            return JsonResponse(list(patients.values()), safe=False, status=200)
+        return JsonResponse({'message': 'No patients found.'}, status=204)
     except Exception as e:
         return JsonResponse({'message': str(e)}, status=500)
 
