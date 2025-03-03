@@ -166,7 +166,7 @@ def send_email(request):
         req = json.loads(request.body.decode('utf-8'))
         receiverEmail = None
         if req.type == "patient":
-            patient = Patients.objects.filter(medical_ref_number=req['id']).first()
+            patient = Patients.objects.filter(pk=req['id']).first()
             if patient is not None:
                 receiverEmail = patient.email
         elif req.type == "clinician":
@@ -184,11 +184,11 @@ def send_message(request):
         req = json.loads(request.body.decode('utf-8'))
         receiverPhoneNumber = None
         if req.type == "patient":
-            patient = Patients.objects.filter(medical_ref_number=req['id']).first()
+            patient = Patients.objects.filter(pk=req['id']).first()
             if patient is not None:
                 receiverPhoneNumber = patient.phone_num
         elif req.type == "clinician":
-            clinician = Clinicians.objects.filter(email=req['email']).first()
+            clinician = Clinicians.objects.filter(pk=req['email']).first()
             if clinician is not None:
                 receiverPhoneNumber = clinician.phone_num
         client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
