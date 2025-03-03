@@ -127,4 +127,14 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
+TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
+GMAIL_PASSWORD = os.getenv('GMAIL_PASSWORD')
+GMAIL_EMAIL = os.getenv('GMAIL_EMAIL')

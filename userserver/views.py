@@ -1,3 +1,5 @@
+from os import close
+
 from django.core.serializers import serialize
 from django.db.models import Q
 from django.forms import model_to_dict
@@ -5,6 +7,13 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from .models import Patients, Clinicians
 import json
+from . import settings
+from twilio.rest import Client
+import smtplib, ssl
+port = 465
+password = settings.GMAIL_PASSWORD
+email = settings.GMAIL_EMAIL
+context = ssl.create_default_context()
 
 def index(request):
     return JsonResponse({"message": "This is the user microservice"})
@@ -148,5 +157,46 @@ def create_patient(request):
 
     except json.JSONDecodeError:
         return JsonResponse({"message": "Invalid JSON body"}, status=400)
+    except Exception as e:
+        return JsonResponse({"message": str(e)}, status=500)
+
+@api_view(['POST'])
+def send_email(request):
+    try:
+        req = json.loads(request.body.decode('utf-8'))
+        receiverEmail = None
+        if req.type == "patient":
+            patient = Patients.objects.filter(medical_ref_number=req['id']).first()
+            if patient is not None:
+                receiverEmail = patient.email
+        elif req.type == "clinician":
+            receiverEmail = req['email']
+        with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+            server.login(email, password)
+            server.sendmail(email, receiverEmail, req.message)
+        return JsonResponse({"message": "email sent successfully"}, status=200)
+    except Exception as e:
+        return JsonResponse({"message": str(e)}, status=500)
+
+@api_view(['POST'])
+def send_message(request):
+    try:
+        req = json.loads(request.body.decode('utf-8'))
+        receiverPhoneNumber = None
+        if req.type == "patient":
+            patient = Patients.objects.filter(medical_ref_number=req['id']).first()
+            if patient is not None:
+                receiverPhoneNumber = patient.phone_num
+        elif req.type == "clinician":
+            clinician = Clinicians.objects.filter(email=req['email']).first()
+            if clinician is not None:
+                receiverPhoneNumber = clinician.phone_num
+        client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+        message = client.messages.create(
+            body=req.messsage,
+            from_="+15416128222",
+            to="+1"+receiverPhoneNumber,
+        )
+        return JsonResponse({"message": "message sent successfully"}, status=200)
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
