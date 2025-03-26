@@ -1,7 +1,7 @@
 CREATE TABLE "clinicians" (
   "first_name" varchar NOT NULL,
   "last_name" varchar NOT NULL,
-  "email" varchar PRIMARY KEY
+  "email" varchar PRIMARY KEY,
 );
 
 CREATE TABLE "patients" (
@@ -23,3 +23,7 @@ CREATE TABLE "available_slots" (
 );
 
 ALTER TABLE "available_slots" ADD FOREIGN KEY ("clinician_id") REFERENCES "clinicians" ("email");
+
+ALTER TABLE "clinicians" ADD COLUMN phone_num varchar;
+ALTER TABLE "clinicians" ADD COLUMN notify_by_phone varchar;
+ALTER TABLE "clinicians" ADD COLUMN notify_by_email varchar;
