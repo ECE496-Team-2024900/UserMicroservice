@@ -19,7 +19,7 @@ def index(request):
     return JsonResponse({"message": "This is the user microservice"})
 
 @api_view(['GET'])
-def find_all_patients(request):
+def get_all_patients(request):
     try:
         obj = Patients.objects.all()
         if (obj is not None):
