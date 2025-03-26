@@ -205,16 +205,18 @@ def send_email(request):
             if patient is not None:
                 receiverEmail = patient.email
         elif req['type'] == "clinician":
-            receiverEmail = req['email']
+            clinician = Clinicians.objects.filter(pk=req['email']).first()
+            if clinician is not None:
+                if not clinician.notify_by_email:
+                    return JsonResponse({"message": "Clinician doesn't prefer email notifications"}, status=200)
+                receiverEmail = clinician.email
         with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
             server.login(email, password)
             msg = MIMEText(req['message'])
             msg['Subject'] = "RemotePDT Treatment Session"
             msg['From'] = email
-            # msg['To'] = receiverEmail
-            msg['To'] = "team2024900@gmail.com"
-            server.sendmail(email, "team2024900@gmail.com", msg.as_string())
-            # server.sendmail(email, receiverEmail, req['message'])
+            msg['To'] = receiverEmail
+            server.sendmail(email, receiverEmail, msg.as_string())
         return JsonResponse({"message": "email sent successfully"}, status=200)
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
@@ -231,13 +233,14 @@ def send_message(request):
         elif req['type'] == "clinician":
             clinician = Clinicians.objects.filter(pk=req['email']).first()
             if clinician is not None:
+                if not clinician.notify_by_phone:
+                    return JsonResponse({"message": "Clinician doesn't prefer phone notifications"}, status=200)
                 receiverPhoneNumber = clinician.phone_num
         client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
         client.messages.create(
             body=req['message'],
             from_="+15416128222",
-            to="+14164359958"
-            # to="+1" + str(receiverPhoneNumber),
+            to="+1" + str(receiverPhoneNumber),
         )
         return JsonResponse({"message": "message sent successfully"}, status=200)
     except Exception as e:
