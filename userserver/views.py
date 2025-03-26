@@ -1,3 +1,4 @@
+from email.mime.text import MIMEText
 from os import close
 
 from django.core.serializers import serialize
@@ -207,7 +208,13 @@ def send_email(request):
             receiverEmail = req['email']
         with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
             server.login(email, password)
-            server.sendmail(email, receiverEmail, req['message'])
+            msg = MIMEText(req['message'])
+            msg['Subject'] = "RemotePDT Treatment Session"
+            msg['From'] = email
+            # msg['To'] = receiverEmail
+            msg['To'] = "team2024900@gmail.com"
+            server.sendmail(email, "team2024900@gmail.com", msg.as_string())
+            # server.sendmail(email, receiverEmail, req['message'])
         return JsonResponse({"message": "email sent successfully"}, status=200)
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
@@ -229,7 +236,8 @@ def send_message(request):
         client.messages.create(
             body=req['message'],
             from_="+15416128222",
-            to="+1" + str(receiverPhoneNumber),
+            to="+14164359958"
+            # to="+1" + str(receiverPhoneNumber),
         )
         return JsonResponse({"message": "message sent successfully"}, status=200)
     except Exception as e:
