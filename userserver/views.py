@@ -199,15 +199,15 @@ def send_email(request):
     try:
         req = json.loads(request.body.decode('utf-8'))
         receiverEmail = None
-        if req.type == "patient":
+        if req['type'] == "patient":
             patient = Patients.objects.filter(pk=req['id']).first()
             if patient is not None:
                 receiverEmail = patient.email
-        elif req.type == "clinician":
+        elif req['type'] == "clinician":
             receiverEmail = req['email']
         with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
             server.login(email, password)
-            server.sendmail(email, receiverEmail, req.message)
+            server.sendmail(email, receiverEmail, req['message'])
         return JsonResponse({"message": "email sent successfully"}, status=200)
     except Exception as e:
         return JsonResponse({"message": str(e)}, status=500)
@@ -217,19 +217,19 @@ def send_message(request):
     try:
         req = json.loads(request.body.decode('utf-8'))
         receiverPhoneNumber = None
-        if req.type == "patient":
+        if req['type'] == "patient":
             patient = Patients.objects.filter(pk=req['id']).first()
             if patient is not None:
                 receiverPhoneNumber = patient.phone_num
-        elif req.type == "clinician":
+        elif req['type'] == "clinician":
             clinician = Clinicians.objects.filter(pk=req['email']).first()
             if clinician is not None:
                 receiverPhoneNumber = clinician.phone_num
         client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-        message = client.messages.create(
-            body=req.messsage,
+        client.messages.create(
+            body=req['message'],
             from_="+15416128222",
-            to="+1"+receiverPhoneNumber,
+            to="+1" + str(receiverPhoneNumber),
         )
         return JsonResponse({"message": "message sent successfully"}, status=200)
     except Exception as e:
