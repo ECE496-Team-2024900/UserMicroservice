@@ -102,7 +102,7 @@ def update_clinician_info(request):
         Clinicians.objects.filter(pk=updated_parameters['email']).update(**updated_parameters)
     except Exception as e:
         return JsonResponse({'message':str(e)}, status=500)
-    return JsonResponse({'message':'Clinician was successfully added'}, status=200)
+    return JsonResponse({'message':'Clinician was successfully updated'}, status=200)
 
 @api_view(['GET'])
 # Checking if clinician exists in DB (i.e. if they are registered)
