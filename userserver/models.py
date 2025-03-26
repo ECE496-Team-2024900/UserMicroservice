@@ -23,6 +23,9 @@ class Clinicians(models.Model):
     first_name = models.CharField()
     last_name = models.CharField()
     email = models.CharField(primary_key=True)
+    phone_num = models.IntegerField()
+    notify_by_phone = models.BooleanField(default=False)
+    notify_by_email = models.BooleanField(default=False)
 
     class Meta:
         managed = False

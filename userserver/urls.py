@@ -32,4 +32,5 @@ urlpatterns = [
     path('users/create_patient', views.create_patient),
     path('users/send_email', views.send_email),
     path('users/send_message', views.send_message),
+    path('users/update_clinician_info', views.update_clinician_info)
 ]

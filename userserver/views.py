@@ -93,6 +93,17 @@ def add_clinician(request):
         return JsonResponse({'message':str(e)}, status=500)
     return JsonResponse({'message':'Clinician was successfully added'}, status=200)
 
+@api_view(['PATCH'])
+# Adding a new clinician
+def update_clinician_info(request):
+    try:
+        # Adding a clinician object based on provided body
+        updated_parameters = json.loads(request.body)
+        Clinicians.objects.filter(pk=updated_parameters['email']).update(**updated_parameters)
+    except Exception as e:
+        return JsonResponse({'message':str(e)}, status=500)
+    return JsonResponse({'message':'Clinician was successfully added'}, status=200)
+
 @api_view(['GET'])
 # Checking if clinician exists in DB (i.e. if they are registered)
 def check_if_clinician_exists(request):
