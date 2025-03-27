@@ -23,7 +23,7 @@ class Clinicians(models.Model):
     first_name = models.CharField()
     last_name = models.CharField()
     email = models.CharField(primary_key=True)
-    phone_num = models.IntegerField()
+    phone_num = models.CharField()
     notify_by_phone = models.BooleanField(default=False)
     notify_by_email = models.BooleanField(default=False)
 
@@ -37,6 +37,7 @@ class Patients(models.Model):
     first_name = models.CharField()
     last_name = models.CharField()
     phone_num = models.IntegerField()
+    phone_number = models.CharField()
     medical_device_id = models.CharField(blank=True, null=True)
     email = models.CharField()
     date_of_birth = models.DateField()

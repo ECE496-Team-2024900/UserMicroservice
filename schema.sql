@@ -27,3 +27,4 @@ ALTER TABLE "available_slots" ADD FOREIGN KEY ("clinician_id") REFERENCES "clini
 ALTER TABLE "clinicians" ADD COLUMN phone_num varchar;
 ALTER TABLE "clinicians" ADD COLUMN notify_by_phone varchar;
 ALTER TABLE "clinicians" ADD COLUMN notify_by_email varchar;
+ALTER TABLE "patients" ADD COLUMN phone_number varchar;

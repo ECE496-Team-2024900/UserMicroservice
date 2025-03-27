@@ -177,7 +177,7 @@ def search_patients(request):
     
 # Creates a new patient record in database
 # Expects a JSON body with key-value pairs that denote the fields and their values
-# Fields/keys required in JSON: first_name, last_name, date_of_birth, medical_ref_number, email, phone_num
+# Fields/keys required in JSON: first_name, last_name, date_of_birth, medical_ref_number, email, phone_number
 # Returns a success or error message
 @api_view(['PUT'])
 def create_patient(request):
@@ -185,7 +185,7 @@ def create_patient(request):
         body = json.loads(request.body)
         
         # Extract fields
-        required_fields = ["first_name", "last_name", "date_of_birth", "medical_ref_number", "email", "phone_num"]
+        required_fields = ["first_name", "last_name", "date_of_birth", "medical_ref_number", "email", "phone_number"]
         missing_fields = [field for field in required_fields if field not in body]
         
         if missing_fields:
@@ -204,7 +204,8 @@ def create_patient(request):
             date_of_birth=body['date_of_birth'],
             medical_ref_number=body['medical_ref_number'],
             email=body['email'],
-            phone_num=body['phone_num']
+            phone_number=body['phone_number'],
+            phone_num=1
         )
         new_patient.save()
 
@@ -249,7 +250,7 @@ def send_message(request):
         if req['type'] == "patient":
             patient = Patients.objects.filter(pk=req['id']).first()
             if patient is not None:
-                receiverPhoneNumber = patient.phone_num
+                receiverPhoneNumber = patient.phone_number
         elif req['type'] == "clinician":
             clinician = Clinicians.objects.filter(pk=req['email']).first()
             if clinician is not None:
